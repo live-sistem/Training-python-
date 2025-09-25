@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Справочник по Python для начинающих</title>
+    <style>
+        :root {
+            --primary: #306998;
+            --secondary: #FFD43B;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), #4B8BBE);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        tbody tr {
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s;
+        }
+        
+        tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        td {
+            padding: 1rem;
+            vertical-align: top;
+        }
+        
+        .topic {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .concept {
+            font-weight: 500;
+        }
+        
+        .syntax {
+            background-color: #f8f9fa;
+            border-left: 3px solid var(--secondary);
+            padding: 0.5rem;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            margin: 0.5rem 0;
+        }
+        
+        .example {
+            background-color: #f0f8ff;
+            border-left: 3px solid #4B8BBE;
+            padding: 0.5rem;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            margin: 0.5rem 0;
+        }
+        
+        .purpose {
+            color: #555;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--dark);
+            color: white;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            th, td {
+                padding: 0.5rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .filter-buttons {
+                justify-content: center;
+            }
+        }
+        
+        .highlight {
+            background-color: rgba(255, 212, 59, 0.3);
+            transition: background-color 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Справочник по Python для начинающих</h1>
+        <p class="subtitle">Всем привет меня зовут Павел, если вы это читаете значит вы хотите разобраться в python. Я попробовал собрать, как мне кажется важные тем для изучение.
+Удачи вам в изучении.</p>
+<p class="subtitle">
+    Так же на сайте есть фильтрация, если вы хотите найти какую-то определенную тему то напишите её в поиск 
+</p>
+    </header>
+    
+    <div class="container">
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Поиск по темам и концепциям...">
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Все темы</button>
+                <button class="filter-btn" data-filter="basics">Основы</button>
+                <button class="filter-btn" data-filter="structures">Структуры данных</button>
+                <button class="filter-btn" data-filter="control">Управление потоком</button>
+                <button class="filter-btn" data-filter="functions">Функции</button>
+                <button class="filter-btn" data-filter="oop">ООП</button>
+                <button class="filter-btn" data-filter="exceptions">Исключения</button>
+            </div>
+        </div>
+        
+        <div class="table-container">
+            <table id="pythonTable">
+                <thead>
+                    <tr>
+                        <th width="15%">Тема</th>
+                        <th width="20%">Концепция</th>
+                        <th width="30%">Синтаксис / Пример</th>
+                        <th width="35%">Для чего нужно?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Основы Python -->
+                    <tr data-category="basics">
+                        <td class="topic">Переменные и типы данных</td>
+                        <td class="concept">Переменная</td>
+                        <td>
+                            <div class="syntax">name = "Вася"</div>
+                            <div class="syntax">age = 25</div>
+                        </td>
+                        <td class="purpose">Именованная область памяти для хранения данных. Позволяет хранить и использовать данные в программе.</td>
+                    </tr>
+                    <tr data-category="basics">
+                        <td class="topic">Переменные и типы данных</td>
+                        <td class="concept">Основные типы данных</td>
+                        <td>
+                            <div class="syntax">int (целое): 10</div>
+                            <div class="syntax">float (дробное): 10.5</div>
+                            <div class="syntax">str (строка): "Привет"</div>
+                            <div class="syntax">bool (логический): True, False</div>
+                        </td>
+                        <td class="purpose">Определять, какого рода данные мы храним и что с ними можно делать.</td>
+                    </tr>
+                    <tr data-category="basics">
+                        <td class="topic">Переменные и типы данных</td>
+                        <td class="concept">Динамическая типизация</td>
+                        <td>
+                            <div class="syntax">x = 5  # x - int</div>
+                            <div class="syntax">x = "пять"  # теперь x - str</div>
+                        </td>
+                        <td class="purpose">Тип переменной определяется автоматически. Позволяет легко менять тип данных переменной.</td>
+                    </tr>
+                    
+                    <!-- Операции -->
+                    <tr data-category="basics">
+                        <td class="topic">Основные операции</td>
+                        <td class="concept">Арифметические операции</td>
+                        <td>
+                            <div class="syntax">+, -, *, /, //, %, **</div>
+                            <div class="example">result = 10 + 5 * 2  # 20</div>
+                        </td>
+                        <td class="purpose">Выполнять математические вычисления.</td>
+                    </tr>
+                    <tr data-category="basics">
+                        <td class="topic">Основные операции</td>
+                        <td class="concept">Операции сравнения</td>
+                        <td>
+                            <div class="syntax">==, !=, >, <, >=, <=</div>
+                            <div class="example">5 > 3  # True</div>
+                            <div class="example">"abc" == "abc"  # True</div>
+                        </td>
+                        <td class="purpose">Сравнивать два значения. Возвращают True или False.</td>
+                    </tr>
+                    <tr data-category="basics">
+                        <td class="topic">Основные операции</td>
+                        <td class="concept">Логические операции</td>
+                        <td>
+                            <div class="syntax">and, or, not</div>
+                            <div class="example">age >= 18 and age <= 65</div>
+                            <div class="example">not is_weekend</div>
+                        </td>
+                        <td class="purpose">Комбинировать условия. Используются в условиях if и циклах.</td>
+                    </tr>
+                    
+                    <!-- Структуры данных -->
+                    <tr data-category="structures">
+                        <td class="topic">Структуры данных</td>
+                        <td class="concept">Список (List)</td>
+                        <td>
+                            <div class="syntax">my_list = [1, 2, 3, "текст"]</div>
+                            <div class="example">my_list.append(4)  # [1, 2, 3, "текст", 4]</div>
+                        </td>
+                        <td class="purpose">Упорядоченная изменяемая коллекция. Может содержать элементы разных типов.</td>
+                    </tr>
+                    <tr data-category="structures">
+                        <td class="topic">Структуры данных</td>
+                        <td class="concept">Кортеж (Tuple)</td>
+                        <td>
+                            <div class="syntax">my_tuple = (1, 2, 3)</div>
+                            <div class="example">coordinates = (10, 20)</div>
+                        </td>
+                        <td class="purpose">Упорядоченная неизменяемая коллекция. Быстрее списков, используется для постоянных данных.</td>
+                    </tr>
+                    <tr data-category="structures">
+                        <td class="topic">Структуры данных</td>
+                        <td class="concept">Словарь (Dictionary)</td>
+                        <td>
+                            <div class="syntax">my_dict = {"ключ": "значение", "age": 25}</div>
+                            <div class="example">person = {"name": "Анна", "age": 30}</div>
+                        </td>
+                        <td class="purpose">Неупорядоченная коллекция пар "ключ-значение". Для хранения данных с быстрым доступом по ключу.</td>
+                    </tr>
+                    <tr data-category="structures">
+                        <td class="topic">Структуры данных</td>
+                        <td class="concept">Множество (Set)</td>
+                        <td>
+                            <div class="syntax">my_set = {1, 2, 3, 3, 4}  # {1, 2, 3, 4}</div>
+                            <div class="example">unique_numbers = set([1, 2, 2, 3])  # {1, 2, 3}</div>
+                        </td>
+                        <td class="purpose">Неупорядоченная коллекция уникальных элементов. Удаляет дубликаты автоматически.</td>
+                    </tr>
+                    
+                    <!-- Управление потоком -->
+                    <tr data-category="control">
+                        <td class="topic">Управление потоком</td>
+                        <td class="concept">Условные операторы (if/elif/else)</td>
+                        <td>
+                            <div class="syntax">if условие:
+    действие
+elif другое_условие:
+    другое_действие
+else:
+    действие_по_умолчанию</div>
+                            <div class="example">if temperature > 30:
+    print("Жарко")
+elif temperature > 20:
+    print("Тепло")
+else:
+    print("Прохладно")</div>
+                        </td>
+                        <td class="purpose">Выполнять разные блоки кода в зависимости от условий.</td>
+                    </tr>
+                    <tr data-category="control">
+                        <td class="topic">Управление потоком</td>
+                        <td class="concept">Цикл for</td>
+                        <td>
+                            <div class="syntax">for элемент in последовательность:
+    действие</div>
+                            <div class="example">for i in range(5):
+    print(i)  # 0, 1, 2, 3, 4</div>
+                        </td>
+                        <td class="purpose">Повторять блок кода для каждого элемента в последовательности.</td>
+                    </tr>
+                    <tr data-category="control">
+                        <td class="topic">Управление потоком</td>
+                        <td class="concept">Цикл while</td>
+                        <td>
+                            <div class="syntax">while условие:
+    действие</div>
+                            <div class="example">count = 0
+while count < 5:
+    print(count)
+    count += 1</div>
+                        </td>
+                        <td class="purpose">Повторять блок кода, пока условие истинно.</td>
+                    </tr>
+                    
+                    <!-- Функции -->
+                    <tr data-category="functions">
+                        <td class="topic">Функции</td>
+                        <td class="concept">Определение функции</td>
+                        <td>
+                            <div class="syntax">def имя_функции(параметры):
+    тело_функции
+    return результат</div>
+                            <div class="example">def greet(name):
+    return f"Привет, {name}!"</div>
+                        </td>
+                        <td class="purpose">Создавать повторно используемые блоки кода. Упрощают программу и избегают повторения.</td>
+                    </tr>
+                    <tr data-category="functions">
+                        <td class="topic">Функции</td>
+                        <td class="concept">Параметры по умолчанию</td>
+                        <td>
+                            <div class="syntax">def функция(параметр=значение_по_умолчанию):</div>
+                            <div class="example">def power(x, n=2):
+    return x ** n
+
+power(5)    # 25
+power(5, 3) # 125</div>
+                        </td>
+                        <td class="purpose">Позволяют вызывать функцию с меньшим количеством аргументов.</td>
+                    </tr>
+                    
+                    <!-- ООП -->
+                    <tr data-category="oop">
+                        <td class="topic">Объектно-ориентированное программирование (ООП)</td>
+                        <td class="concept">Класс и объект</td>
+                        <td>
+                            <div class="syntax">class ИмяКласса:
+    def __init__(self, параметры):
+        self.атрибут = параметр
+        
+    def метод(self):
+        действие</div>
+                            <div class="example">class Dog:
+    def __init__(self, name):
+        self.name = name
+        
+    def bark(self):
+        return "Гав!"</div>
+                        </td>
+                        <td class="purpose">Создавать собственные типы данных, объединяющие данные и методы для работы с ними.</td>
+                    </tr>
+                    <tr data-category="oop">
+                        <td class="topic">ООП</td>
+                        <td class="concept">Наследование</td>
+                        <td>
+                            <div class="syntax">class ДочернийКласс(РодительскийКласс):</div>
+                            <div class="example">class Animal:
+    def speak(self):
+        pass
+
+class Cat(Animal):
+    def speak(self):
+        return "Мяу!"</div>
+                        </td>
+                        <td class="purpose">Позволяет создавать новый класс на основе существующего, наследуя его атрибуты и методы.</td>
+                    </tr>
+                    
+                    <!-- Исключения -->
+                    <tr data-category="exceptions">
+                        <td class="topic">Обработка исключений</td>
+                        <td class="concept">Try/Except</td>
+                        <td>
+                            <div class="syntax">try:
+    потенциально_опасный_код
+except ТипОшибки:
+    обработка_ошибки</div>
+                            <div class="example">try:
+    number = int(input("Введите число: "))
+except ValueError:
+    print("Это не число!")</div>
+                        </td>
+                        <td class="purpose">Обрабатывать ошибки, чтобы программа не аварийно завершалась.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Справочник по Python для начинающих &copy; 2025 Он Носова Павла</p>
+    </footer>
+
+    <script>
+        // Функция для фильтрации таблицы
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const searchInput = document.getElementById('searchInput');
+            const tableRows = document.querySelectorAll('#pythonTable tbody tr');
+            
+            // Обработчики для кнопок фильтра
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // Обновляем активную кнопку
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Фильтруем строки таблицы
+                    tableRows.forEach(row => {
+                        if (filter === 'all' || row.getAttribute('data-category') === filter) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Обработчик для поиска
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                
+                tableRows.forEach(row => {
+                    const topic = row.querySelector('.topic').textContent.toLowerCase();
+                    const concept = row.querySelector('.concept').textContent.toLowerCase();
+                    const syntax = row.querySelector('.syntax').textContent.toLowerCase();
+                    const purpose = row.querySelector('.purpose').textContent.toLowerCase();
+                    
+                    if (topic.includes(searchTerm) || concept.includes(searchTerm) || 
+                        syntax.includes(searchTerm) || purpose.includes(searchTerm)) {
+                        row.style.display = '';
+                        
+                        // Подсветка найденного текста
+                        if (searchTerm) {
+                            row.classList.add('highlight');
+                        } else {
+                            row.classList.remove('highlight');
+                        }
+                    } else {
+                        row.style.display = 'none';
+                        row.classList.remove('highlight');
+                    }
+                });
+            });
+            
+            // Убираем подсветку при изменении фильтра
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    tableRows.forEach(row => {
+                        row.classList.remove('highlight');
+                    });
+                    searchInput.value = '';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
